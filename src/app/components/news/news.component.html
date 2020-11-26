@@ -1,0 +1,28 @@
+<h3>World News</h3>
+<div class="row" *ngIf="!isLoading else loading">
+    <div class="col-lg-4 mb-4" *ngFor="let article of articles">
+        <div class="card lift h-100" (click)="openLink(article.url)">
+            <img class="card-img-top" [src]="article.urlToImage" alt="No image provided">
+            <div class="card-body">
+                <p class="card-time">{{article.publishedAt | date}}</p>
+                <h5 class="card-title">{{article.title | trimOutletName: article.source.name}}</h5>
+                <p class="card-text">{{ article.description | truncadeText: 100 }}</p>
+            </div>
+            <div class="card-footer bg-transparent border-top d-flex align-items-center justify-content-between">
+                <div class="small text-primary">See more</div>
+                <div class="small text-primary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #loading>
+    <app-loading-bar></app-loading-bar>
+</ng-template>
+
+<app-paginator [numberOfPages]="numberOfPages" (pageChanged)="pageChanged($event)"></app-paginator>

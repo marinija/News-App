@@ -1,0 +1,10 @@
+<nav>
+    <ul class="pagination justify-content-center">
+        <li
+            class="page-item"
+            *ngFor="let page of pageOptions; let i = index"
+            [ngClass]="page === currentPage ? 'active' : ''">
+            <a class="page-link" (click)="openPage(page)">{{ page }}</a>
+        </li>
+    </ul>
+</nav>

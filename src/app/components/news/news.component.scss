@@ -1,0 +1,17 @@
+.list-image {
+  width: 160px;
+}
+
+.card-img-top {
+  height: 230px;
+}
+
+.lift {
+  transition: 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-0.3333333333rem);
+    box-shadow: 0 0.5rem 2rem 0 rgba(33, 40, 50, 0.25);
+  }
+}
