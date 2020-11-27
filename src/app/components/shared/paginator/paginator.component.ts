@@ -4,6 +4,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit, Output, EventEmitter
   selector: 'app-paginator',
   templateUrl: './paginator.component.html',
   styleUrls: ['./paginator.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaginatorComponent implements OnInit {
   @Input() numberOfPages: number;

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { delay, tap } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
+import { delay, first, shareReplay, take, takeUntil, tap } from 'rxjs/operators';
 import { Articles } from 'src/app/models/Articles';
 import { NewsService } from 'src/app/services/news.service';
 
@@ -12,26 +13,16 @@ export class NewsComponent implements OnInit {
 
   articles: Articles[] = [];
   numberOfPages: number = 0;
-  isLoading: boolean = false;;
+  isLoading: boolean = false;
+  public readonly categories = ['business', 'entertainment', 'health', 'science', 'sports', 'technology'];
+  private categorySelected: string = '';
+  private subscription: Subscription;
 
   constructor(private newsService: NewsService) {
   }
 
   ngOnInit() {
-    this.newsService.pagesOutput
-      .pipe(
-        tap(res => this.isLoading = true),
-        delay(1000),
-      ).subscribe(articles => {
-        console.log(articles);
-        this.isLoading = false;
-        this.articles = articles;
-        window.scroll({
-          top: 0,
-          left: 0,
-          behavior: 'smooth'
-        })
-      });
+    this.fetchingNews();
     this.newsService.numberOfPages.subscribe(res => this.numberOfPages = res);
     this.newsService.getPage(1);
   }
@@ -42,6 +33,33 @@ export class NewsComponent implements OnInit {
 
   openLink(link: string) {
     window.open(link, "_blank");
+  }
+
+  categoryChange(category: string): void {
+    this.categorySelected = category;
+  }
+
+  searchCategory(): void {
+    this.subscription.unsubscribe();
+    this.fetchingNews(this.categorySelected);
+    this.newsService.numberOfPages.subscribe(res => this.numberOfPages = res);
+    this.newsService.getPage(1);
+  }
+
+  private fetchingNews(category = 'business'): void {
+    this.subscription = this.newsService.fetchNews(category)
+      .pipe(
+        tap(res => this.isLoading = true),
+        delay(1000)
+      ).subscribe(articles => {
+        console.log(articles);
+        this.assignValues(articles);
+      });
+  }
+
+  private assignValues(articles: Articles[]) {
+    this.isLoading = false;
+    this.articles = articles;
   }
 
 }

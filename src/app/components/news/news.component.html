@@ -1,8 +1,35 @@
-<h3>World News</h3>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3">
+    <a class="navbar-brand" href="#">News App</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Scroll News</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="row my-4">
+    <h2 class="text-dark mb-4">Select your category to see news:</h2>
+    <div class="col-lg-8">
+        <select class="form-control" (change)="categoryChange($event.target.value)">
+            <option *ngFor="let catergory of categories" [value]="catergory">{{catergory}}</option>
+        </select>
+    </div>
+    <div class="col-lg-4">
+        <button class="btn btn-outline-primary" (click)="searchCategory()">Search</button>
+    </div>
+</div>
+
 <div class="row" *ngIf="!isLoading else loading">
     <div class="col-lg-4 mb-4" *ngFor="let article of articles">
         <div class="card lift h-100" (click)="openLink(article.url)">
-            <img class="card-img-top" [src]="article.urlToImage" alt="No image provided">
+            <img class="card-img-top" *ngIf="article.urlToImage; else noImage" [src]="article.urlToImage" alt="No image provided">
+            <ng-template #noImage>
+                <img class="card-img-top" src="assets/question-mark.jpg" alt="No image provided">
+            </ng-template>
             <div class="card-body">
                 <p class="card-time">{{article.publishedAt | date}}</p>
                 <h5 class="card-title">{{article.title | trimOutletName: article.source.name}}</h5>
