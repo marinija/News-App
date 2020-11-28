@@ -1,0 +1,24 @@
+<ng-template [ngIf]="!errorMessage" [ngIfElse]="errorMessageTmp">
+    <ul class="list-group mt-4" appInfiniteScroll (loadMoreItems)="loadItems($event)">
+        <li class="list-group-item list-group-item-light" *ngFor="let article of articles" (click)="openLink(article.url)">
+            <div class="d-flex">
+                <div class="flex-1 mr-3 ">
+                    <img class="img-fluid" *ngIf="article.urlToImage; else noImage" [src]="article.urlToImage" alt="No image provided">
+                    <ng-template #noImage>
+                        <img class="img-fluid" src="assets/question-mark.jpg" alt="No image provided">
+                    </ng-template>
+                </div>
+                <div class="flex-2">
+                    <p>{{article.publishedAt | date: 'dd MMM yyyy'}}</p>
+                    <p>{{article.description | truncadeText: 100}}</p>
+                </div>
+            </div>
+
+        </li>
+        <app-loading-bar *ngIf="loadingBar"></app-loading-bar>
+    </ul>
+</ng-template>
+
+<ng-template #errorMessageTmp>
+    <h4 class="mt-4">{{errorMessage}}</h4>
+</ng-template>

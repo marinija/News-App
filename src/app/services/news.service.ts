@@ -40,6 +40,10 @@ export class NewsService {
     );
   }
 
+  getDummyNews(page: number = 1) {
+    return this.http.get(`https://jsonplaceholder.typicode.com/posts?_limit=10&_page=${page}`);
+  }
+
   getPage(page: number) {
     this.pagesInput.next(page);
   }

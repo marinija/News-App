@@ -9,6 +9,9 @@ import { PaginatorComponent } from './components/shared/paginator/paginator.comp
 import { TrimOutletNamePipe } from './pipes/trim-outlet-name.pipe';
 import { TruncadePipe } from './pipes/truncade.pipe';
 import { LoadingBarComponent } from './components/shared/loading-bar/loading-bar.component';
+import { ScrollNewsComponent } from './components/scroll-news/scroll-news.component';
+import { HeaderComponent } from './components/header/header.component';
+import { InfiniteScrollDirective } from './directives/infinite-scroll.directive';
 
 @NgModule({
   declarations: [
@@ -17,7 +20,10 @@ import { LoadingBarComponent } from './components/shared/loading-bar/loading-bar
     PaginatorComponent,
     TrimOutletNamePipe,
     TruncadePipe,
-    LoadingBarComponent
+    LoadingBarComponent,
+    ScrollNewsComponent,
+    HeaderComponent,
+    InfiniteScrollDirective
   ],
   imports: [
     BrowserModule,

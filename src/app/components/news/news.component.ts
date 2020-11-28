@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
-import { delay, first, shareReplay, take, takeUntil, tap } from 'rxjs/operators';
+import { EMPTY, of, Subject, Subscription, throwError } from 'rxjs';
+import { catchError, delay, first, shareReplay, take, takeUntil, tap } from 'rxjs/operators';
 import { Articles } from 'src/app/models/Articles';
 import { NewsService } from 'src/app/services/news.service';
 
@@ -16,6 +16,7 @@ export class NewsComponent implements OnInit {
   isLoading: boolean = false;
   public readonly categories = ['business', 'entertainment', 'health', 'science', 'sports', 'technology'];
   private categorySelected: string = '';
+  public errorMessage: string;
   private subscription: Subscription;
 
   constructor(private newsService: NewsService) {
@@ -49,6 +50,13 @@ export class NewsComponent implements OnInit {
   private fetchingNews(category = 'business'): void {
     this.subscription = this.newsService.fetchNews(category)
       .pipe(
+        catchError(err => {
+          if (err) {
+            console.log(err.error.message)
+            this.errorMessage = err.error.message;
+            return EMPTY;
+          }
+        }),
         tap(res => this.isLoading = true),
         delay(1000)
       ).subscribe(articles => {
